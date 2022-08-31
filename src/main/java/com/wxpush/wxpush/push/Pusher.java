@@ -1,6 +1,7 @@
-package com.wxpush.wxpush.controller;
+package com.wxpush.wxpush.push;
 
 import com.wxpush.wxpush.entiy.Weather;
+import com.wxpush.wxpush.entiy.WxDefault;
 import com.wxpush.wxpush.utils.CaiHongPiUtils;
 import com.wxpush.wxpush.utils.JiNianRiUtils;
 import com.wxpush.wxpush.utils.WeatherUtils;
@@ -12,25 +13,21 @@ import me.chanjar.weixin.mp.bean.template.WxMpTemplateMessage;
 
 public class Pusher {
 
-    public static void main(String[] args) {
-        push();
-    }
-    private static String appId = "填写微信测试平台appid";
-    private static String secret = "填写微信测试平台secret";
 
 
 
-    public static void push(){
+
+    public static void push(WxDefault wxDefault){
         //1，配置
         WxMpInMemoryConfigStorage wxStorage = new WxMpInMemoryConfigStorage();
-        wxStorage.setAppId(appId);
-        wxStorage.setSecret(secret);
+        wxStorage.setAppId(wxDefault.getAppId());
+        wxStorage.setSecret(wxDefault.getSecret());
         WxMpService wxMpService = new WxMpServiceImpl();
         wxMpService.setWxMpConfigStorage(wxStorage);
         // 推送消息
         WxMpTemplateMessage templateMessage = WxMpTemplateMessage.builder()
-                .toUser("用户微信openid")
-                .templateId("消息模板id")
+                .toUser(wxDefault.getOpenid())
+                .templateId(wxDefault.getTemplateId())
                 .build();
         // 配置你的信息
         Weather weather = WeatherUtils.getWeather();
